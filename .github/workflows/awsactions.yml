@@ -18,14 +18,15 @@ jobs:
           script: |
             sudo docker stop pollapp-container || true
             sudo docker rm pollapp-container || true
-            sudo docker rmi manthad/django_pollapp:latest || true
+            sudo docker rmi manthad/django_pollapp:v1 || true
             sudo docker pull manthad/django_pollapp:v1
-            sudo docker run -d --name pollapp-container -p 8001:8000 manthad/django_pollapp:v1
+            sudo docker run -d --name pollapp-container -p 8000:8000 manthad/django_pollapp:v1
 
             # sudo docker stop fastapi_container || true
             # sudo docker rm fastapi_container || true
             # sudo docker rmi manthad/fastapi-demo:latest || true
             # sudo docker pull manthad/fastapi-demo:latest
             # sudo docker run -d --name ec2-fastapi-container -p 8000:8000 manthad/fastapi-demo:latest
+            
 
         
