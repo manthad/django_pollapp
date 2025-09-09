@@ -3,7 +3,8 @@
 {% for choice in question.choice_set.all %}
     <li>{{ choice.choice_text }}</li>
 {% endfor %}
-</ul> -->     we are updating this with the form format
+</ul> -->     
+<!-- we are updating this with the form format -->
 
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}

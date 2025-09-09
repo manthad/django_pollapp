@@ -165,4 +165,27 @@ Now this is how it should look right so need to modify the views.py
       this will take the html file and fill the data in it and show on the web page   
 * There is a shortcut for the loader and render part
 
-* What if user entered wrong id for the question then we need to raise an error right for that 404          
+* What if user entered wrong id for the question then we need to raise an error right for that 404   
+
+
+models                                            Vs                                 Model
+models is the module. file/package django gives                         inside models we have many classes one of them is Model
+school                                                                  this is like a teacher class
+
+
+We can do automation testing using tests.py file. we write the code and test it at code level with command
+    python manage.py test polls
+This runs the tests that are defined in tests.py file inside polls app.
+
+=> We can add color to the page by creating a static/polls/style.css file and linking that to index.html, detail.html and whatever pages
+=> we also have a django debug toolbar which works same like network tab in inspect element of browser
+   pip install django-debug-toolbar
+   then add it to installed apps in settings.py file and also add the middleware in the same file
+   then add the url in the main urls.py file of project folder
+   then run the server and see the changes on the browser
+
+
+To make changes in the admin we are modifying admin.py and in settings we are proving the templates path
+in other name
+/opt/homebrew/Caskroom/miniconda/base/lib/python3.12/site-packages/django
+now we go here and write the html or css code to change the look of the admin page
