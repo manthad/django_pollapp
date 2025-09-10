@@ -18,11 +18,11 @@ jobs:
           script: 
             sudo docker stop pollapp-container || true
             sudo docker rm pollapp-container || true
-            sudo docker rmi manthad/django_pollapp:v1 || true
-            sudo docker pull manthad/django_pollapp:v2
+            sudo docker rmi manthad/django_pollapp:v2 || true
+            sudo docker pull manthad/django_pollapp:v3
             sudo docker run -d --name pollapp-container -p 8000:8000 \
             -v /home/ubuntu/pollrestore:/app/db.sqlite3 \
-            manthad/django_pollapp:v2
+            manthad/django_pollapp:v3
 
             # sudo docker stop fastapi_container || true
             # sudo docker rm fastapi_container || true
