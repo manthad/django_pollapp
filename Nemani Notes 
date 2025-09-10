@@ -1,0 +1,96 @@
+To do a backup of the site below are the steps to follow
+
+1. Create a EC2 instance based on the requirement
+    Have your backup file and all the code folder
+2. ssh into it checking whether able to access the instance
+3. Now come back to local and 
+    scp -i your-key.pem nm_astrology.sql ubuntu@<IP>:/home/ubuntu/
+    scp -i your-key.pem drupal_code.zip ubuntu@<IP>:/home/ubuntu/
+
+    This meand under home/ubuntu of ec2 instance these files are copied
+
+4. For the app to check we need nginx, php and db mariadb right 
+    so install them one by one
+      sudo apt update     
+
+      sudo apt install nginx
+
+      sudo apt install mariadb-server
+
+      sudo apt install php-fpm php-mysql php-cli php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip php-bcmath unzip
+      installing php extensions as only php means is like an engine(flour,sugar,milk) but to mix or make a cake we need more 
+5. Now start the services
+      sudo systemctl start nginx
+      sudo systemctl start mariadb
+      sudo systemctl start php7.4-fpm
+      sudo systemctl enable nginx
+      sudo systemctl enable mariadb
+      sudo systemctl enable php7.4-fpm
+6. Now check the status of the services
+7. Now login to ssh and login to mariadb
+      sudo mysql -u root -p
+      then set the pwd and login again or enter for blank password now create a user and db
+      create database nm_astrology;
+      create user 'nmastrologyuser'@'localhost' identified by 'yourpassword';
+      grant all privileges on nm_astrology.* to 'nmastrologyuser'@'localhost';
+      flush privileges;
+      exit; -- to exit from mariadb
+Now in local
+         mysql -u drupaluser -p drupal7 < drupal_backup.sql -> we are dumping this file
+
+
+8. Now import the db file that we copied to ec2 instance
+      sudo mysql -u root -p nm_astrology < /home/ubuntu/nm_astrology.sql
+      We can check whether the db is imported or not by logging to mariadb with user nm_
+      astrology and using the db and pwd is what we have provided and show tables;
+      
+9. Now unzip the code file and copy the code to /var/www/html
+
+    scp -i your-key.pem drupal_backup.zip ubuntu@<your-ec2-ip>:/home/ubuntu/
+ we are putting our tar file in ec2 /home/ubuntu
+ It has to be inside ubuntu but we are creating one more folder called nm-astro in which we are unzipping the code
+   sudo mkdir -p /var/www/drupal7
+   sudo unzip drupal_backup.zip -d /var/www/drupal7/
+
+setting the permission
+sudo chown -R www-data:www-data /var/www/drupal7
+sudo chmod -R 755 /var/www/drupal7
+
+Coz we need to do many modifications right thats why
+
+Now go to sudo nano /var/www/drupal7/sites/default/settings.php and change the datavasename, username and prefix as ''
+
+
+We think everything is done to run a website it need a config file for nginx right
+10. So create a config file for nginx
+sudo nano /etc/nginx/sites-available/drupal7 and paste the code
+which says on what port the site is responding and what is the public ip of it to check
+
+enabling the site 
+sudo ln -s /etc/nginx/sites-available/drupal7 /etc/nginx/sites-enabled/
+sudo nginx -t - checking for the errors
+sudo systemctl reload nginx
+
+
+In general nginx server only server 80 page i.e. welcome page 
+if we want our app or site to run we need to explicitly write a file instead of default file which is already exisiting
+Now the file name can be anything without spaces but no extension needed.
+But only writing the file is not enough we need to tell nginx to use this file so linking that to the enabled folder
+
+sudo ln -s /etc/nginx/sites-available/nm-astro /etc/nginx/sites-enabled/
+
+this is just creating a shortcut
+we will use only for those sites whihc we want to run or active else we can delete the link
+if not necessary
+sudo rm /etc/nginx/sites-enabled/nm-astro
+
+server {
+    listen 80;
+    server_name <your-ec2-public-ip>;
+
+    root /var/www/nm-astro;
+    index index.php index.html index.htm; 
+    this is the main part of complete code
+
+So restart the nginx and can see the site with the ec2 public ip
+sudo systemctl restart nginx
