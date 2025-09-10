@@ -7,7 +7,7 @@ To do a backup of the site below are the steps to follow
     scp -i your-key.pem nm_astrology.sql ubuntu@<IP>:/home/ubuntu/
     scp -i your-key.pem drupal_code.zip ubuntu@<IP>:/home/ubuntu/
 
-    This meand under home/ubuntu of ec2 instance these files are copied
+    This means under home/ubuntu of ec2 instance these files are copied
 
 4. For the app to check we need nginx, php and db mariadb right 
     so install them one by one
@@ -39,7 +39,7 @@ Now in local
          mysql -u drupaluser -p drupal7 < drupal_backup.sql -> we are dumping this file
 
 
-8. Now import the db file that we copied to ec2 instance
+8. Now import the db file that we copied to ec2 instance => this is the restore command
       sudo mysql -u root -p nm_astrology < /home/ubuntu/nm_astrology.sql
       We can check whether the db is imported or not by logging to mariadb with user nm_
       astrology and using the db and pwd is what we have provided and show tables;

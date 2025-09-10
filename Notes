@@ -189,3 +189,28 @@ To make changes in the admin we are modifying admin.py and in settings we are pr
 in other name
 /opt/homebrew/Caskroom/miniconda/base/lib/python3.12/site-packages/django
 now we go here and write the html or css code to change the look of the admin page
+
+
+
+
+I have created the docker file same as before and created the image and container and checked in localhost:8000/polls
+Now we are going to deploy this project in aws ec2 instance
+1. Create an ec2 instance and connect to it using ssh
+2. Now installed docker
+   Written gitactions file for build and push and validate whether the workflow is successful or not
+   Now actions file for deploy the docker container to ec2 instance by pulling the image and removing the container if exists
+   Now once everything is working fine checking with the publicip:8000/polls
+
+3. Now trying to back up the data from local to ec2 such that even though the instance is deleted  the data is still there
+   => First connect to ec2 instance - just like we have done in nemani astrology project have the sql file and code file
+   => Now move those both files to ec2 instance using scp command.
+      scp -i "keypair.pem" sql and zip file ubuntu@ec2-ip-address:/home/ubuntu/
+
+Now for the app to run we need nginx, php and db mariadb right so install them one by one
+   sudo apt update
+   sudo apt install nginx
+   sudo apt install php-fpm php-mysql
+   sudo apt install mariadb-server mariadb-client
+   sudo mysql_secure_installation
+
+   Got to mariadb and create db and user and provide all privileges
