@@ -23,7 +23,7 @@ jobs:
           platforms: linux/amd64
           # file: ./Dockerfile
           push: true
-          tags: manthad/django_pollapp:v1 # docker repo name
+          tags: manthad/django_pollapp:v2 # docker repo name
       # - name: Docker build and push docker image
       #   uses: docker/build-push-action@v6
       #   with:
