@@ -46,10 +46,11 @@ jobs:
           script: 
             sudo docker stop postgress-container || true
             sudo docker rm -f postgress-container || true
+            sudo docker container prune -f
             sudo docker rmi manthad/postgress_pollappdb:v1 || true
             sudo docker pull manthad/postgress_pollappdb:v2
 
-            sudo docker run -d --name postgress-container --network host -p 8001:8000 manthad/postgress_pollappdb:v2
+            sudo docker run -d --name postgress-container -p 8001:8000 --add-host=docker.internal:host-gateway manthad/postgress_pollappdb:v2
             # -v /home/ubuntu/pollrestore/polldb_backup.sqlite3:/usr/src/app/db.sqlite3 manthad/postgress_pollappdb:v1
 
 
