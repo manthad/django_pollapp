@@ -22,7 +22,7 @@ jobs:
           platforms: linux/amd64
           # file: ./Dockerfile
           push: true
-          tags: manthad/postgress_pollappdb:v1 # docker repo name
+          tags: manthad/postgress_pollappdb:v2 # docker repo name
       # - name: Docker build and push docker image
       #   uses: docker/build-push-action@v6
       #   with:
@@ -44,12 +44,12 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: 
-            # sudo docker stop pollapp-container || true
-            # sudo docker rm pollapp-container || true
-            # sudo docker rmi manthad/django_pollapp:v2 || true
-            sudo docker pull manthad/postgress_pollappdb:v1
+            sudo docker stop postgress-container || true
+            sudo docker rm postgress-container || true
+            sudo docker rmi manthad/postgress_pollappdb:v1 || true
+            sudo docker pull manthad/postgress_pollappdb:v2
 
-            sudo docker run -d --name postgress-container -p 8001:8000 manthad/postgress_pollappdb:v1
+            sudo docker run -d --name postgress-container --network host -p 8001:8000 manthad/postgress_pollappdb:v2
             # -v /home/ubuntu/pollrestore/polldb_backup.sqlite3:/usr/src/app/db.sqlite3 manthad/postgress_pollappdb:v1
 
 
