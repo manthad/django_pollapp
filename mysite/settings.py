@@ -75,10 +75,22 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',   # PostgreSQL backend
+        'NAME': 'postgress_pollappdb',                      # Database name
+        'USER': 'postgresuser',                      # Database username
+        'PASSWORD': 'Q4NrBNzRkLBW',                 # Database password
+        'HOST': 'host.docker.internal',     # to run on the docker container
+        # 'HOST': 'localhost',     to run on mac                # Or the DB server IP / container name
+        'PORT': '5432',                              # Default PostgreSQL port
     }
 }
 
