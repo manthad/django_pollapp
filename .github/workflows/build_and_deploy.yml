@@ -4,33 +4,33 @@ on:
     branches:
       - test
 jobs:
-  # build-and-push:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
-  #     - name: docker setup buildx  
-  #       uses: docker/setup-buildx-action@v3
-  #     - name: Login to Docker Hub
-  #       uses: docker/login-action@v3 
-  #       with:
-  #         username: ${{ secrets.POLLAPP_USERNAME }} # docker username
-  #         password: ${{ secrets.POLLAPP_PASSWORD }} # docker pwd personal access token
-  #     - name: Docker build and push docker image
-  #       uses: docker/build-push-action@v6
-  #       with:
-  #         platforms: linux/amd64
-  #         # file: ./Dockerfile
-  #         push: true
-  #         tags: manthad/django_pollapp:v3 # docker repo name
-  #     # - name: Docker build and push docker image
-  #     #   uses: docker/build-push-action@v6
-  #     #   with:
-  #     #     platforms: linux/amd64
-  #     #     context: .
-  #     #     file: Dockerfile
-  #     #     push: true
-  #     #     tags: manthad/djangoapp-demo:v1
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: docker setup buildx  
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3 
+        with:
+          username: ${{ secrets.POLLAPP_USERNAME }} # docker username
+          password: ${{ secrets.POLLAPP_PASSWORD }} # docker pwd personal access token
+      - name: Docker build and push docker image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          # file: ./Dockerfile
+          push: true
+          tags: manthad/postgress_pollappdb:v1 # docker repo name
+      # - name: Docker build and push docker image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     platforms: linux/amd64
+      #     context: .
+      #     file: Dockerfile
+      #     push: true
+      #     tags: manthad/djangoapp-demo:v1
             
   deploy:
     runs-on: ubuntu-latest # or your self-hosted runner
@@ -47,9 +47,11 @@ jobs:
             # sudo docker stop pollapp-container || true
             # sudo docker rm pollapp-container || true
             # sudo docker rmi manthad/django_pollapp:v2 || true
-            sudo docker pull manthad/django_pollapp:v3
-            
-            sudo docker run -d --name pollapp-container -p 8000:8000 -v /home/ubuntu/pollrestore/polldb_backup.sqlite3:/usr/src/app/db.sqlite3 manthad/django_pollapp:v3
+            sudo docker pull manthad/postgress_pollappdb:v1
+
+            sudo docker run -d --name postgress-container -p 8001:8000
+            # -v /home/ubuntu/pollrestore/polldb_backup.sqlite3:/usr/src/app/db.sqlite3 manthad/postgress_pollappdb:v1
+
 
             # sudo docker stop fastapi_container || true
             # sudo docker rm fastapi_container || true
