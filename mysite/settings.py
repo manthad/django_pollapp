@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'postgress_pollappdb',                      # Database name
         'USER': 'postgresuser',                      # Database username
         'PASSWORD': 'Q4NrBNzRkLBW',                 # Database password
-        'HOST': 'postgress-container',     # to run on the docker container
+        'HOST': 'host.docker.internal',     # to run on the docker container
         # 'HOST': 'localhost',     #to run on mac and also on docker container in ec2      # Or the DB server IP / container name
         'PORT': '5432',                              # Default PostgreSQL port
     }
