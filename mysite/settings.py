@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+# from decouple import config  # to read the .env file
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xy%l%y%bbrmfqkwkvoopmzmyks#aq6yzypqlg9e_=oc%7+#f(9'
+# SECRET_KEY = 'django-insecure-xy%l%y%bbrmfqkwkvoopmzmyks#aq6yzypqlg9e_=oc%7+#f(9'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG", default=0))#True
 
-ALLOWED_HOSTS = ['34.201.54.178', '54.90.95.224', '127.0.0.1', 'localhost','13.218.11.215']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","127.0.0.1").split(",")
+# ['34.201.54.178', '54.90.95.224', '127.0.0.1', 'localhost','13.218.11.215']
 
 
 
@@ -57,7 +61,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -85,12 +89,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',   # PostgreSQL backend
-        'NAME': 'postgress_pollappdb',                      # Database name
-        'USER': 'postgresuser',                      # Database username
-        'PASSWORD': 'Q4NrBNzRkLBW',                 # Database password
-        'HOST': 'host.docker.internal',     # to run on the docker container
+        'NAME': os.getenv('DATABASE_NAME', 'postgress_pollappdb'),                    # Database name
+        'USER': os.getenv('DATABASE_USERNAME', 'postgresuser'),                      # Database username
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'Q4NrBNzRkLBW'),                 # Database password
+        'HOST': os.getenv('DATABASE_HOST', 'db'),     # to run on the docker container
         # 'HOST': 'localhost',     #to run on mac and also on docker container in ec2      # Or the DB server IP / container name
-        'PORT': '5432',                              # Default PostgreSQL port
+        'PORT': os.getenv('DATABASE_PORT', '5432'),                              # Default PostgreSQL port
     }
 }
 
@@ -129,7 +133,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # your CSS/JS folder
+STATIC_ROOT = BASE_DIR / 'staticfiles'  
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

@@ -1,0 +1,9 @@
+li a {
+    color: blueviolet;
+}
+li  {
+    color: brown;
+}
+body {
+    background: white url("images/background.png") no-repeat;
+}

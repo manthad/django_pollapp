@@ -214,3 +214,15 @@ Now for the app to run we need nginx, php and db mariadb right so install them o
    sudo mysql_secure_installation
 
    Got to mariadb and create db and user and provide all privileges
+
+
+Updations:
+
+1. First made the size of the docker image smaller by using multi stage builds
+   => Added a user other than the root for our safety
+   => kept few things in os.env.get without revealing them in the code
+2. Docker compose file: 
+      => In docker also instead of using the username and pwds openely we are using env file
+      => Also added a volume for db so that even though the container is deleted the data is preserved
+      => The secrets added in env file are only used by docker not local system, hence no need to worry if in settings.py is not changed. So we can write one user and pwd in settings.py for local and other in env file for docker
+      
