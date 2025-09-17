@@ -40,22 +40,13 @@ jobs:
 
       - name: Copy docker-compose.yml to EC2
         uses: appleboy/scp-action@v0.1.7
-        env:
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          DEBUG: "0"
-          DJANGO_ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
-          DATABASE_ENGINE: "django.db.backends.postgresql"
-          DATABASE_HOST: "db"
-          DATABASE_PORT: "5432"
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "./"
           target: "/home/${{ secrets.EC2_USER }}/pollapp"
+        
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@master
@@ -64,10 +55,12 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }} 
           script: |
-            ls -la /home
-            ls -la /home/ubuntu || true
-            ls -la /home/ec2-user || true
-            cd /home/${{ secrets.EC2_USER }}/pollapp || cd /home/ec2-user/pollapp
+            # ls -la /home
+            # ls -la /home/ubuntu || true
+            # ls -la /home/ec2-user || true
+            cd /home/${{ secrets.EC2_USER }}/pollapp #|| cd /home/ec2-user/pollapp
+
+            
             cat > .env <<EOF
             DATABASE_NAME=${{ secrets.DATABASE_NAME }}
             DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
@@ -82,19 +75,18 @@ jobs:
 
             sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/pollapp
             sudo chmod -R 755 /home/${{ secrets.EC2_USER }}/pollapp
-            ls -la
+           
             sudo apt update
-            sudo apt install -y docker.io 
-            sudo apt install -y docker-compose
+            sudo apt install -y docker.io docker-compose
             sudo systemctl start docker
             sudo systemctl enable docker
-            cd 
+            
             sudo docker-compose down || true
             sudo docker-compose pull
-            sudo docker-compose home/ubuntu/pollapp/docker-compose.yml up -d --build
+            sudo docker-compose -f home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml up -d --build
 
-            docker-compose exec web python manage.py migrate
-            docker-compose exec web python manage.py collectstatic --noinput
+            docker-compose -f /home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml exec web python manage.py migrate
+            docker-compose -f /home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml exec web python manage.py collectstatic --noinput
         
 
             # sudo docker stop postgress-container || true
