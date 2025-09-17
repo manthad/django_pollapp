@@ -88,13 +88,13 @@ jobs:
             sudo apt install -y docker-compose
             sudo systemctl start docker
             sudo systemctl enable docker
-
+            cd 
             sudo docker-compose down || true
             sudo docker-compose pull
             sudo docker-compose up -d --build
 
-            docker-compose exec web python manage.py migrate
-            docker-compose exec web python manage.py collectstatic --noinput
+            sudo docker-compose exec web python manage.py migrate
+            sudo docker-compose exec web python manage.py collectstatic --noinput
         
 
             # sudo docker stop postgress-container || true
