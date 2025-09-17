@@ -58,6 +58,9 @@ jobs:
             ls -la /home/ubuntu || true
             ls -la /home/ec2-user || true
             cd /home/${{ secrets.EC2_USER }}/pollapp || cd /home/ec2-user/pollapp
+
+            sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/pollapp
+            sudo chmod -R 755 /home/${{ secrets.EC2_USER }}/pollapp
             ls -la
             sudo apt update
             sudo apt install -y docker.io 
