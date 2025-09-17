@@ -45,7 +45,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "./"
-          target: "/home/ubuntu/pollapp"
+          target: "/home/${{ secrets.EC2_USER }}/pollapp"
 
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@master
@@ -54,7 +54,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }} 
           script: |
-            cd /home/ubuntu/app
+            ls -la /home
+            ls -la /home/ubuntu || true
+            ls -la /home/ec2-user || true
+            cd /home/${{ secrets.EC2_USER }}/pollapp || cd /home/ec2-user/pollapp
+            ls -la
             sudo apt update
             sudo apt install -y docker.io 
             sudo apt install -y docker-compose
