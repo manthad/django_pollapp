@@ -91,7 +91,7 @@ jobs:
             cd 
             sudo docker-compose down || true
             sudo docker-compose pull
-            sudo docker-compose up -d --build
+            sudo docker-compose home/ubuntu/pollapp/docker-compose.yml up -d --build
 
             docker-compose exec web python manage.py migrate
             docker-compose exec web python manage.py collectstatic --noinput
