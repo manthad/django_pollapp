@@ -83,10 +83,11 @@ jobs:
             
             sudo docker-compose down || true
             sudo docker-compose pull
-            sudo docker-compose -f home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml up -d --build
+            cd /home/${{secrets.EC2_USER}}/pollapp
+            sudo docker-compose up -d --build#-f home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml 
 
-            docker-compose -f /home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml exec web python manage.py migrate
-            docker-compose -f /home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml exec web python manage.py collectstatic --noinput
+            docker-compose exec web python manage.py migrate #-f /home/ubuntu/pollapp/docker-compose.yml 
+            docker-compose exec web python manage.py collectstatic --noinput #-f /home/ubuntu/pollapp/docker-compose.yml 
         
 
             # sudo docker stop postgress-container || true
