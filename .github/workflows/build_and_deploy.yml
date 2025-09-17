@@ -56,7 +56,8 @@ jobs:
           script: |
             cd /home/ubuntu/app
             sudo apt update
-            sudo apt install -y docker.io docker-compose-plugin
+            sudo apt install -y docker.io 
+            sudo apt install -y docker-compose
             sudo systemctl start docker
             sudo systemctl enable docker
 
